@@ -141,6 +141,13 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
     $smarty->assign('img_links',       $links['img']);
     $smarty->assign('txt_links',       $links['txt']);
     $smarty->assign('data_dir',        DATA_DIR);       // 数据目录
+	
+ 
+$smarty->assign("flash",get_flash_xml());
+$smarty->assign('flash_count',count(get_flash_xml()));
+
+
+
 
     /* 首页推荐分类 */
     $cat_recommend_res = $db->getAll("SELECT c.cat_id, c.cat_name, cr.recommend_type FROM " . $ecs->table("cat_recommend") . " AS cr INNER JOIN " . $ecs->table("category") . " AS c ON cr.cat_id=c.cat_id");
@@ -355,6 +362,32 @@ function index_get_links()
     }
 
     return $links;
+}
+
+function get_flash_xml()
+{
+    $flashdb = array();
+    if (file_exists(ROOT_PATH . DATA_DIR . '/flash_data.xml'))
+    {
+
+        // 兼容v2.7.0及以前版本
+        if (!preg_match_all('/item_url="([^"]+)"\slink="([^"]+)"\stext="([^"]*)"\ssort="([^"]*)"/', file_get_contents(ROOT_PATH . DATA_DIR . '/flash_data.xml'), $t, PREG_SET_ORDER))
+        {
+            preg_match_all('/item_url="([^"]+)"\slink="([^"]+)"\stext="([^"]*)"/', file_get_contents(ROOT_PATH . DATA_DIR . '/flash_data.xml'), $t, PREG_SET_ORDER);
+        }
+
+        if (!empty($t))
+        {
+            foreach ($t as $key => $val)
+            {
+                $val[4] = isset($val[4]) ? $val[4] : 0;
+                $flashdb[] = array('src'=>$val[1],'url'=>$val[2],'text'=>$val[3],'sort'=>$val[4]);
+				
+				//print_r($flashdb);
+            }
+        }
+    }
+    return $flashdb;
 }
 
 ?>

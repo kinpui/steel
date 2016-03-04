@@ -140,7 +140,7 @@ body {
   </li>
 {/if}
 {/foreach}
-  <script language="JavaScript" src="http://api.ecshop.com/menu_ext.php?charset={$charset}&lang={$help_lang}"></script>
+ <script language="JavaScript" src="http://ecshop.ecmoban.com/menu_ext.php?charset={$charset}&lang={$help_lang}"></script>
 </ul>
 </div>
 <div id="help-div" style="display:none">
@@ -149,7 +149,6 @@ body {
 </div>
 </div>
 {insert_scripts files="../js/global.js,../js/utils.js,../js/transport.js"}
-{insert_scripts files="./js/menu.js"}
 <script language="JavaScript">
 <!--
 var collapse_all = "{$lang.collapse_all}";
@@ -378,7 +377,7 @@ Object.extend(ToggleHanlder ,{
   {
     if (document.getCookie(this.CookieName) != null)
     {
-      this.SourceObject = t_eval ();
+      this.SourceObject = t_eval();
       var items = document.getElementsByTagName('LI');
       for (var i = 0; i < items.length; i++)
       {
